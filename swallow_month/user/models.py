@@ -44,3 +44,13 @@ class User(AbstractBaseUser,PermissionsMixin):
         }, settings.SECRET_KEY, algorithm = "HS256")
         
         return token 
+    
+
+class Profile(models.Model):
+    userName = models.OneToOneField(User,on_delete=models.CASCADE,db_column='userName',to_field='userName') 
+    userImage = models.ImageField(default='')
+    userComment = models.TextField(null=True,default="")
+    
+    # str 반환
+    def __str__(self):
+        return self.userName.userName

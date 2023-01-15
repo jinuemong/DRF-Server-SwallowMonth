@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -124,3 +124,10 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# MEDIA FILE의 경로 설정 - Upload된 파일들이 저장되는 위치를 지정
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+
+# 절대 경로로 이미지로 접근
+# http://http://127.0.0.1:8000/media/현재날자/이미지.jpg
+MEDIA_URL = '/media/'
