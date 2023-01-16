@@ -14,7 +14,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     
     USERNAME_FIELD = "userName"  # 로그인 시 id로 사용
     
-    object = UserManager()
+    objects = UserManager()
     
     def __str__(self):
         return self.userName
