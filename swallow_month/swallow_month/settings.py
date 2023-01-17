@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'dayData',
-    'routine'
+    'routine',
+    'user',
 ]
 
 MIDDLEWARE = [
@@ -124,6 +125,10 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# AbstractUser 상속 시 필수
+
+AUTH_USER_MODEL = 'user.User'
 
 # MEDIA FILE의 경로 설정 - Upload된 파일들이 저장되는 위치를 지정
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')

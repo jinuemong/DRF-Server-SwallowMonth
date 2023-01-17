@@ -48,7 +48,7 @@ class User(AbstractBaseUser,PermissionsMixin):
 
 class Profile(models.Model):
     userName = models.OneToOneField(User,on_delete=models.CASCADE,db_column='userName',to_field='userName') 
-    userImage = models.ImageField(default='')
+    userImage = models.ImageField(default='default.png',upload_to="%Y/%m/%d")
     userComment = models.TextField(null=True,default="")
     
     # str 반환

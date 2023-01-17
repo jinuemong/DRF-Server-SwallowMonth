@@ -139,4 +139,5 @@ class ProfileSeralizer(serializers.ModelSerializer):
     class Meta:
         managed = True
         model = Profile
-        fields  = '__all__'
+        db_table = "Profiles"
+        fields  = "__all__"
