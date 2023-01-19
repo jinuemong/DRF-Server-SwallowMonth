@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class DaydataConfig(AppConfig):
+class taskConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'dayData'
+    name = 'task'

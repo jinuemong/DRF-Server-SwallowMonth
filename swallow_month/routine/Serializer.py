@@ -18,7 +18,7 @@ class RoutineSerializer(serializers.ModelSerializer):
         managed = True
         model = Routine
         db_table = "Routines"
-        fields = ['routineId','userId','keyDate','text','cycle','startNum',
+        fields = ['routineId','userId','monthId','keyDate','text','cycle','startNum',
                   'totalRoutine','clearRoutine','iconType','topText',
                   'dayRoutinePost']
         
