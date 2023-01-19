@@ -10,11 +10,11 @@ class RoutineViewSet(viewsets.ModelViewSet):
     queryset = Routine.objects.all()
     serializer_class = RoutineSerializer
     filter_backends = [filters.SearchFilter]
-    # search_fields =[]
+    search_fields =['=userId__userName__userName']
 
 class DayRoutineViewSet(viewsets.ModelViewSet):
     
     queryset = DayRoutine.objects.all()
     serializer_class = DayRoutineSerializer
     filter_backends = [filters.SearchFilter]
-    # search_fields =[]
+    search_fields =['=userId__userName__userName']

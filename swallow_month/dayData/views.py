@@ -10,11 +10,11 @@ class DayDataViewSet(viewsets.ModelViewSet):
     queryset = DayData.objects.all()
     serializer_class = DayDataSeralizer
     filter_backends = [filters.SearchFilter]
-    # search_fields =[]
+    search_fields =['=userId__userName__userName']
 
 class TaskViewSet(viewsets.ModelViewSet):
     
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     filter_backends = [filters.SearchFilter]
-    # search_fields =[]
+    search_fields =['=userId__userName__userName']

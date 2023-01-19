@@ -17,5 +17,5 @@ class DayDataSeralizer(serializers.ModelSerializer):
        managed=True
        model = DayData
        db_table = "DayDatas"
-       fields = ['dayDataId', 'KeyDate', 'day', 'isSelected',
+       fields = ['dayDataId', 'userId','KeyDate', 'day', 'isSelected',
                  'monthIndex', 'taskPost'] 

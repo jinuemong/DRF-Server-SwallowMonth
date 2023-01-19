@@ -1,8 +1,10 @@
 from django.db import models
-
+from user.models import User
 
 class Routine(models.Model):
     routineId = models.BigAutoField(primary_key=True,help_text="Routine ID")
+    userId = models.ForeignKey(User,on_delete=models.CASCADE
+                               ,related_name='routinePost',to_field='userName')
     keyDate = models.CharField(max_length=20,default=False)
     text = models.TextField()
     cycle = models.IntegerField()
