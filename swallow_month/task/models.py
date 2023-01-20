@@ -8,7 +8,7 @@ class Task(models.Model):
                                   ,related_name="taskPost",db_column='monthId',to_field='monthId')
     userId = models.ForeignKey(User,on_delete=models.CASCADE
                                ,related_name='taskPost',to_field='userName')
-    monthIndex = models.IntegerField()
+    dayIndex = models.IntegerField()
     text = models.TextField()
     isDone = models.BooleanField(default=False)
     iconType = models.IntegerField(default=0)

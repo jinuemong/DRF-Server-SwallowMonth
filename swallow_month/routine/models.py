@@ -24,4 +24,5 @@ class DayRoutine(models.Model):
     monthId = models.ForeignKey(MonthData,on_delete=models.CASCADE
                                   ,related_name="dayRoutinePost",db_column='monthId',to_field='monthId')
     dayIndex =  models.IntegerField()
+    keyDate = models.CharField(max_length=20,default=False)
     clear = models.BooleanField(default=False)

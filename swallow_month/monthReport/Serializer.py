@@ -1,12 +1,22 @@
 from .models import MonthData
 from rest_framework import serializers
 from task.Serializer import TaskSerializer
+from routine.Serializer import RoutineSerializer, DayRoutineSerializer
 
 class MonthDataSerializer(serializers.ModelSerializer):
+    taskPost = TaskSerializer(many=True,read_only=True)
+    dayRoutinePost = DayRoutineSerializer(many=True,read_only=True)
+    routinePost = RoutineSerializer(many=True,read_only = True)
     
+    # 갯수 카운터 
+    taskCount = serializers.ReadOnlyField(source='taskPost.count')
+    dayRoutineCount = serializers.ReadOnlyField(source='dayRoutinePost.count')
+    routineCount = serializers.ReadOnlyField(source='routinePost.count')
     class Meta:
         managed = True
         model = MonthData
         db_table = "MonthDatas"
-        fields = ['monthId','userId','keyDate','totalPer','totalPoint',
+        fields = ['monthId','userId','keyDate',
+                  'totalPer','totalPoint',
+                  'taskCount','dayRoutineCount','routineCount',
                   'doneTask','clearRoutine']
