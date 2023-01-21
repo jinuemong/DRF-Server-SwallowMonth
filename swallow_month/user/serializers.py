@@ -21,19 +21,18 @@ class RegstrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields =[
-            'email',
-            'username',
+            'userName',
             'password',
             'token'
             ] #토큰 데이터 추가
         
     def create(self, validated_data):
-        username = validated_data['username']
-        if username =='superuser':
-            print("슈퍼 유저가 생성 되었습니다.",username)
+        userName = validated_data['userName']
+        if userName =='superuser':
+            print("슈퍼 유저가 생성 되었습니다.",userName)
             return User.objects.create_superuser(**validated_data)
         else:
-            print("슈퍼 유저가 생성 실패",username)
+            print("슈퍼 유저가 생성 실패",userName)
             return User.objects.create_user(**validated_data)
         
     
@@ -41,7 +40,7 @@ class RegstrationSerializer(serializers.ModelSerializer):
 # 사용자 로그인 
 # username과 password를 확인 후 응답 전송
 
-class LoginSerializer(serializers.ModelSerializer):
+class LoginSerializer(serializers.Serializer):
     
     userName = serializers.CharField(max_length=255)
     password = serializers.CharField(max_length=128, write_only = True)
@@ -70,7 +69,7 @@ class LoginSerializer(serializers.ModelSerializer):
         
         if user is None:
             raise serializers.ValidationError(
-                'An user with this username and pw was not found'
+                'An user with this userName and pw was not found'
             )
             
         if not user.is_active:
@@ -103,8 +102,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'email',
-            'username',
+            'userName',
             'password',
             'token'
         ]

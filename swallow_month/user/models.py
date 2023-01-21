@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 import jwt
 
 class User(AbstractBaseUser,PermissionsMixin):
-    userName = models.CharField(max_length=100, unique=True,db_column='username')
+    userName = models.CharField(max_length=255, unique=True,db_column='userName')
     is_active = BooleanField(default=True)
     is_staff = BooleanField(default=False)
     

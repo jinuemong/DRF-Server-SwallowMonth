@@ -15,7 +15,7 @@ class RegistrationAPIView(APIView):
     permission_classes = (AllowAny,)
     
     serializer_class = RegstrationSerializer
-    renderer_classes = (UserJsonRenderer)
+    renderer_classes = (UserJsonRenderer,)
     
     # 요청 
     def post(self,request):

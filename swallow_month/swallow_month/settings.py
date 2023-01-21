@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-7v#0vxr@zwkkk-a0lyomz)t=oqm)%pa%#-7v$x6(7o#@8&gsj5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -131,6 +131,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'user.User'
 
+REST_FRAMEWORK = {
+
+}
 # MEDIA FILE의 경로 설정 - Upload된 파일들이 저장되는 위치를 지정
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
