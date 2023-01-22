@@ -15,7 +15,7 @@ class RoutineViewSet(viewsets.ModelViewSet):
         KeyDate = self.request.query_params.get('KeyDate')
         # user + key data 검색 >  이번달 리스트 뽑기 
         if userName and KeyDate:
-            queryset =self.queryset.filter(username__username__username  = userName) \
+            queryset =self.queryset.filter(userId__userName  = userName) \
             & self.queryset.filter(KeyDate  = KeyDate)     
             return queryset
         # else

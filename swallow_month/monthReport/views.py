@@ -17,7 +17,7 @@ class MonthViewSet(viewsets.ModelViewSet):
         
         # user + key data 검색 (1개 쿼리 반환)
         if userName and KeyDate:
-            queryset =self.queryset.filter(username__username__username  = userName) \
+            queryset =self.queryset.filter(userId__userName  = userName) \
             & self.queryset.filter(KeyDate  = KeyDate)     
             return queryset
         # user만 검색 (dayData리스트 반환)
