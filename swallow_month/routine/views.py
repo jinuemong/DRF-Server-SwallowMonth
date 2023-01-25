@@ -12,11 +12,11 @@ class RoutineViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter]
     def get_queryset(self):
         userName= self.request.query_params.get('userName')
-        KeyDate = self.request.query_params.get('KeyDate')
+        keyDate = self.request.query_params.get('keyDate')
         # user + key data 검색 >  이번달 리스트 뽑기 
-        if userName and KeyDate:
+        if userName and keyDate:
             queryset =self.queryset.filter(userId__userName  = userName) \
-            & self.queryset.filter(KeyDate  = KeyDate)     
+            & self.queryset.filter(keyDate  = keyDate)     
             return queryset
         # else
         return self.queryset

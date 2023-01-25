@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
             name='MonthData',
             fields=[
                 ('monthId', models.BigAutoField(help_text='month ID', primary_key=True, serialize=False)),
-                ('KeyDate', models.CharField(default=False, max_length=20)),
+                ('keyDate', models.CharField(default=False, max_length=20)),
                 ('totalPer', models.IntegerField()),
                 ('totalPoint', models.IntegerField()),
                 ('doneTask', models.IntegerField()),

@@ -4,8 +4,8 @@ from task.Serializer import TaskSerializer
 from routine.Serializer import  DayRoutineSerializer
 
 class MonthDataSerializer(serializers.ModelSerializer):
-    taskPost = TaskSerializer(many=True,read_only=True)
-    dayRoutinePost = DayRoutineSerializer(many=True,read_only=True)
+    # taskPost = TaskSerializer(many=True,read_only=True)
+    # dayRoutinePost = DayRoutineSerializer(many=True,read_only=True)
     
     # 갯수 카운터 
     taskCount = serializers.ReadOnlyField(source='taskPost.count')
