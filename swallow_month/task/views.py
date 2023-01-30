@@ -15,17 +15,17 @@ class TaskViewSet(viewsets.ModelViewSet):
     
     def get_queryset(self):
         userName= self.request.query_params.get('userName')
-        keyDate = self.request.query_params.get('keyDate')
+        monthId = self.request.query_params.get('monthId')
         dayIndex = self.request.query_params.get('dayIndex')
         # user + key data 검색 >  이번달 리스트 뽑기 
-        if userName and keyDate:
+        if userName and monthId:
             queryset =self.queryset.filter(userId__userName  = userName) \
-            & self.queryset.filter(keyDate  = keyDate)     
+            & self.queryset.filter(monthId  = monthId)     
             return queryset
         # user + key date + day 검색 > 하루 리스트 뽑기
-        if userName and keyDate and dayIndex:
+        if userName and monthId and dayIndex:
             queryset =self.queryset.filter(userId__userName  = userName) \
-            & self.queryset.filter(keyDate  = keyDate) & self.queryset.filter(dayIndex=dayIndex)
+            & self.queryset.filter(monthId  = monthId) & self.queryset.filter(dayIndex=dayIndex)
             return queryset
         # else
         return self.queryset

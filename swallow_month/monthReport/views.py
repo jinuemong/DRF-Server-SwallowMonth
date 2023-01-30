@@ -12,10 +12,8 @@ class MonthViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter]
 
     def get_queryset(self):
- 
         userName= self.request.query_params.get('userName')
         keyDate = self.request.query_params.get('keyDate')
-        print("sadaasdasd1",userName,keyDate)
         # user + key data 검색 (1개 쿼리 반환)
         if userName and keyDate:
             print("sadaasdasd2",userName,keyDate)
