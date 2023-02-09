@@ -14,7 +14,7 @@ class Routine(models.Model):
     totalRoutine = models.IntegerField()
     clearRoutine = models.IntegerField()
     iconType = models.IntegerField(default=0)
-    topText = models.CharField(max_length=30,default=False)
+    topText = models.CharField(max_length=50,default=False)
 
 
 class DayRoutine(models.Model):
