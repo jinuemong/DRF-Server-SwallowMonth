@@ -47,6 +47,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     
 
 class Profile(models.Model):
+    profileId  = models.BigAutoField(primary_key=True,help_text="Profile ID")
     userName = models.OneToOneField(User,on_delete=models.CASCADE,db_column='userName',to_field='userName') 
     userImage = models.ImageField(default='default.png',upload_to="%Y/%m/%d")
     userComment = models.TextField(null=True,default="")
