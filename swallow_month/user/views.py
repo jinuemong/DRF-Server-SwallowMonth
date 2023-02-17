@@ -90,3 +90,29 @@ class ProfileViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter]
     search_fields = ['=userName__userName']
     #<참조하는 필드__참조 당하는 명>으로 해줘야 외래키 검색 가능
+
+
+
+# profile & user 업데이트용
+
+class UpdateProfileView(APIView):
+
+    def get_object(self,profileId):
+        try:
+            return Profile.objects.get(profileId = profileId)
+        except Profile.DoesNotExist:
+            return Response(id,status=status.HTTP_400_BAD_REQUEST)
+        
+    def post(self,request):
+        data = request.data
+        print("12213123123123123123123123",data)
+        profile = self.get_object(data['profileId'])
+        serializer = ProfileSeralizer(profile,data=data)
+
+        if serializer.is_valid():
+            serializer.save()
+            
+            print("12213123123123123123123123",serializer.data)
+
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)

@@ -1,5 +1,5 @@
 from django.urls import path,include
-from .views import RegistrationAPIView, LoginAPIView
+from .views import RegistrationAPIView, LoginAPIView,UpdateProfileView
 from .views import UserRetrieveUpdateAPIView,ProfileViewSet
 from rest_framework.routers import DefaultRouter
 
@@ -11,4 +11,5 @@ urlpatterns = [
     path('login/',LoginAPIView.as_view()),
     path('current/',UserRetrieveUpdateAPIView.as_view()),
     path('',include(router_user.urls)),
+    path('update/profile/',UpdateProfileView.as_view()),
 ]

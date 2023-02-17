@@ -50,7 +50,7 @@ class Profile(models.Model):
     profileId  = models.BigAutoField(primary_key=True,help_text="Profile ID")
     userName = models.OneToOneField(User,on_delete=models.CASCADE,db_column='userName',to_field='userName') 
     userImage = models.ImageField(default='default.png',upload_to="%Y/%m/%d")
-    userComment = models.TextField(null=True,default="")
+    userComment = models.TextField(null=False,default="")
     
     # str 반환
     def __str__(self):

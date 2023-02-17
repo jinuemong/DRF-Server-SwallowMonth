@@ -89,7 +89,7 @@ class LoginSerializer(serializers.Serializer):
         }
     
 
-# 용자 정보 확인 + 업데이트
+# 사용자 정보 확인 + 업데이트
 
 class UserSerializer(serializers.ModelSerializer):
     
