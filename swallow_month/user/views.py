@@ -104,15 +104,11 @@ class UpdateProfileView(APIView):
             return Response(id,status=status.HTTP_400_BAD_REQUEST)
         
     def post(self,request):
-        data = request.data
-        print("12213123123123123123123123",data)
-        profile = self.get_object(data['profileId'])
-        serializer = ProfileSeralizer(profile,data=data)
-
-        if serializer.is_valid():
-            serializer.save()
-            
-            print("12213123123123123123123123",serializer.data)
-
+        data = request.data #데이터 받기
+        profile = self.get_object(data['profileId']) #이전 데이터 불러오기 
+        serializer = ProfileSeralizer(profile,data=data) #새 데이터 적용 
+    
+        if serializer.is_valid(): 
+            serializer.save() #데이터가 유효하면 저장 후 반환 
             return Response(serializer.data,status=status.HTTP_200_OK)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
