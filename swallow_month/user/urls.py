@@ -12,4 +12,5 @@ urlpatterns = [
     path('current/',UserRetrieveUpdateAPIView.as_view()),
     path('',include(router_user.urls)),
     path('update/profile/',UpdateProfileView.as_view()),
+
 ]

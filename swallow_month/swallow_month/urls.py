@@ -20,6 +20,7 @@ from task import urls
 from routine import urls
 from user import urls
 from monthReport import urls
+from relation import urls
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -29,4 +30,5 @@ urlpatterns = [
     path('user/',include('user.urls')),
     path('task/',include('task.urls')),
     path('routine/',include('routine.urls')),
+    path('relation/',include('relation.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
