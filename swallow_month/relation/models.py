@@ -11,4 +11,5 @@ class FUser(models.Model):
                              ,related_name="fUserPost",to_field="frId")
     userId = models.ForeignKey(User,on_delete=models.CASCADE
                                ,related_name="fUserPost",to_field="userName")
+    otherUser = models.CharField(max_length=20,default=False)
     
