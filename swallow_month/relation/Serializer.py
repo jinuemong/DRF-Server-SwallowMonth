@@ -12,7 +12,7 @@ class FUserSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class FrendShipSerializer(serializers.ModelSerializer):
-
+    
     fUserPost = FUserSerializer(many = True,read_only = True)
     class Meta:
         managed = True

@@ -8,7 +8,7 @@ router_routine.register('fusers',FUserViewSet)
 
 
 urlpatterns = [
-    path('myFrineds/',MyFriendList.as_view()),
+    path('myFriends/',MyFriendList.as_view()),
     path('randomProfile/',RandomUserView.as_view()),
     path('',include(router_routine.urls)),
 ]

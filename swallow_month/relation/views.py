@@ -30,7 +30,10 @@ class MyFriendList(APIView):
         try:
             userName = request.data['userName']
             friendList = FUser.objects.filter(userName = userName)
-            friendList = [ProfileSeralizer(put).data for put in friendList]
+            # 두 데이터 받기 
+            friendList = [[FrendShipSerializer(put.frId).data
+                           ,ProfileSeralizer(put.otherUser).data] 
+                          for put in friendList]
             return Response(friendList,status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
@@ -41,17 +44,18 @@ class RandomUserView(APIView):
 
     def post(self,request):
         Profile_list = Profile.objects.all() # 전체 리스트 집합
-        # 쿼리셋을 리스트로 변환 (name만 추출 )
-        Profile_list = [Profile_list[i].userName for i in range(0,len(Profile_list))] 
+        # 쿼리셋을 리스트로 변환 (profileId 추출 )
+        Profile_list = [Profile_list[i].profileId for i in range(0,len(Profile_list))] 
 
         # 내  이름 
-        userName = request.data['userName']
+        pId = request.data['profileId']
+        myProfile = Profile.objects.get(profileId = pId)
         # 내 친구 리스트 받기 
-        put_list = FUser.objects.filter(userName = userName)
-        # 친구 리스트 이름 추출   
+        put_list = FUser.objects.filter(userName = myProfile.userName)
+        # 친구 리스트 profileId 추출   
         excludeList = set([put_list[i].otherUser for i in range(0,len(put_list))])
         # 제외 리스트에 나 추가 
-        excludeList.add(userName)
+        excludeList.add(pId)
 
         # 나와 친구가 아닌 리스트 얻기 
         profileList = [i for i in Profile_list if i not in excludeList]
