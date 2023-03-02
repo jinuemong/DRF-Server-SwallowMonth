@@ -23,6 +23,17 @@ class FUserViewSet(viewsets.ModelViewSet):
     serializer_class = FUserSerializer
     filter_backends = [filters.SearchFilter]
 
+# 내 친구 리스트
+class MyFriendList(APIView):
+
+    def post(self,request):
+        try:
+            userName = request.data['userName']
+            friendList = FUser.objects.filter(userName = userName)
+            friendList = [ProfileSeralizer(put).data for put in friendList]
+            return Response(friendList,status=status.HTTP_200_OK)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 # 랜덤유저 생성 
 # userName을 받음 
