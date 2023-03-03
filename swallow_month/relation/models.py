@@ -3,7 +3,7 @@ from django.db import models
 # two member
 class FriendShip(models.Model):
     frId = models.BigAutoField(primary_key=True,help_text="Friendship ID")
-    name = models.CharField(max_length=30,default=False)
+    name = models.CharField(max_length=30,null=False)
 
 class FUser(models.Model):
     fuId = models.BigAutoField(primary_key=True,help_text="FUser ID")
@@ -11,10 +11,14 @@ class FUser(models.Model):
                              ,related_name="fUserPost",to_field="frId")
     userId = models.ForeignKey(User,on_delete=models.CASCADE
                                ,related_name="fUserPost",to_field="userName")
-    otherUser = models.IntegerField(default=False)
+    otherUser = models.IntegerField(null=False)
 
+# type으로 데이터 구분 typeId로 접근 
 class Alarm(models.Model):
     alarmId = models.BigAutoField(primary_key=True,help_text="Alarm ID")
     userId = models.ForeignKey(User,on_delete=models.CASCADE
                                ,related_name="AlarmPost",to_field="userName")
-    type = models.CharField(default=False)
+    type = models.CharField(null=False)
+    typeId = models.IntegerField(null=False)
+    isRead = models.BooleanField(default=False)
+

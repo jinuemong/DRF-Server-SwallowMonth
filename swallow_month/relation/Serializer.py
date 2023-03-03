@@ -1,6 +1,7 @@
-from .models import FriendShip,FUser
-from user.models import Profile
+from .models import FriendShip,FUser, Alarm
+
 from rest_framework import serializers
+
 
 
 class FUserSerializer(serializers.ModelSerializer):
@@ -19,3 +20,12 @@ class FrendShipSerializer(serializers.ModelSerializer):
         model = FriendShip
         db_table = "FriendShips"
         fields = ["frId","name","fUserPost"]
+    
+
+class AlarmSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        managed = True
+        model = Alarm
+        db_table = "Alarms"
+        fields = "__all__"

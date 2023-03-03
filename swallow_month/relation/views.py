@@ -3,8 +3,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from user.models import Profile
 from user.serializers import ProfileSeralizer
-from .models import FriendShip,FUser
-from .Serializer import FrendShipSerializer,FUserSerializer
+from .models import FriendShip,FUser, Alarm
+from .Serializer import FrendShipSerializer,FUserSerializer,AlarmSerializer
 from rest_framework import viewsets
 from rest_framework import filters,status
 import random
@@ -15,16 +15,24 @@ class FriendShipViewSet(viewsets.ModelViewSet):
     serializer_class = FrendShipSerializer
     filter_backends = [filters.SearchFilter]
 
-
-
 class FUserViewSet(viewsets.ModelViewSet):
 
     queryset = FUser.objects.all()
     serializer_class = FUserSerializer
     filter_backends = [filters.SearchFilter]
 
-# 내 친구 리스트
-class MyFriendList(APIView):
+
+class AlarmViewSet(viewsets.ModelViewSet):
+    
+    queryset = Alarm.objects.all()
+    serializer_class = AlarmSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['=userId__userName__userName']
+
+    
+
+# 친구 리스트 (프로필 )
+class FriendList(APIView):
 
     def post(self,request):
         try:
@@ -68,3 +76,4 @@ class RandomUserView(APIView):
         randList = [ProfileSeralizer(put).data for put in rand_list]
 
         return Response(randList,status=status.HTTP_200_OK)
+
