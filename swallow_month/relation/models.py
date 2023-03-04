@@ -18,7 +18,14 @@ class Alarm(models.Model):
     alarmId = models.BigAutoField(primary_key=True,help_text="Alarm ID")
     userId = models.ForeignKey(User,on_delete=models.CASCADE
                                ,related_name="AlarmPost",to_field="userName")
-    type = models.CharField(null=False)
+    type = models.CharField(max_length=20,null=False)
     typeId = models.IntegerField(null=False)
     isRead = models.BooleanField(default=False)
 
+class Message(models.Model):
+    messageId = models.BigAutoField(primary_key=True,help_text="Message ID")
+    frId = models.ForeignKey(FriendShip,on_delete=models.CASCADE
+                             ,related_name="messagePost",to_field="frId")
+    userID = models.ForeignKey(User,on_delete=models.CASCADE
+                               ,related_name="messagePost",to_field="userName")
+    text = models.TextField()

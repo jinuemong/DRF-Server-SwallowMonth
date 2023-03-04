@@ -3,8 +3,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from user.models import Profile
 from user.serializers import ProfileSeralizer
-from .models import FriendShip,FUser, Alarm
-from .Serializer import FrendShipSerializer,FUserSerializer,AlarmSerializer
+from .models import FriendShip,FUser, Alarm , Message
+from .Serializer import FrendShipSerializer,FUserSerializer,AlarmSerializer, MessageSerializer
 from rest_framework import viewsets
 from rest_framework import filters,status
 import random
@@ -21,6 +21,12 @@ class FUserViewSet(viewsets.ModelViewSet):
     serializer_class = FUserSerializer
     filter_backends = [filters.SearchFilter]
 
+class MessageViewSet(viewsets.ModelViewSet):
+
+    queryset = Message.objects.all()
+    serializer_class = MessageSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['=frId__frId']
 
 class AlarmViewSet(viewsets.ModelViewSet):
     
@@ -32,15 +38,14 @@ class AlarmViewSet(viewsets.ModelViewSet):
     
 
 # 친구 리스트 (프로필 )
-class FriendList(APIView):
+class FriendListView(APIView):
 
     def post(self,request):
         try:
             userName = request.data['userName']
             friendList = FUser.objects.filter(userName = userName)
             # 두 데이터 받기 
-            friendList = [[FrendShipSerializer(put.frId).data
-                           ,ProfileSeralizer(put.otherUser).data] 
+            friendList = [ProfileSeralizer(put.otherUser).data 
                           for put in friendList]
             return Response(friendList,status=status.HTTP_200_OK)
         except:
@@ -77,3 +82,20 @@ class RandomUserView(APIView):
 
         return Response(randList,status=status.HTTP_200_OK)
 
+
+
+
+# # 친구 리스트 (프로필 )
+# class FriendListView(APIView):
+
+#     def post(self,request):
+#         try:
+#             userName = request.data['userName']
+#             friendList = FUser.objects.filter(userName = userName)
+#             # 두 데이터 받기 
+#             friendList = [[FrendShipSerializer(put.frId).data
+#                            ,ProfileSeralizer(put.otherUser).data] 
+#                           for put in friendList]
+#             return Response(friendList,status=status.HTTP_200_OK)
+#         except:
+#             return Response(status=status.HTTP_404_NOT_FOUND)

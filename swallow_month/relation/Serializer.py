@@ -1,4 +1,4 @@
-from .models import FriendShip,FUser, Alarm
+from .models import FriendShip,FUser, Alarm, Message
 
 from rest_framework import serializers
 
@@ -10,6 +10,14 @@ class FUserSerializer(serializers.ModelSerializer):
         managed = True
         model = FUser
         db_table = "FUsers"
+        fields = "__all__"
+
+class MessageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        managed = True
+        model = Message
+        db_table = "Messages"
         fields = "__all__"
 
 class FrendShipSerializer(serializers.ModelSerializer):
