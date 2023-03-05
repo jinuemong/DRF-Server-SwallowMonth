@@ -103,6 +103,7 @@ class MessageListView(APIView):
     
 
 ## is frined? username ,targetUser (profile Id) 받음 
+# 두 관계를 확인
 class CheckFriendView(APIView):
 
     def post(self,request):
@@ -118,8 +119,27 @@ class CheckFriendView(APIView):
                 return Response(friendList,status=status.HTTP_200_OK)
                           
             else:
+
                 return Response([],status=status.HTTP_200_OK)
 
 
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+    
+
+            # if fuser.exists(): # 단순 요청 관계
+            #     # user change
+            #     user1 = Profile.objects.get(profileId = targetUser).userName
+            #     user2 = Profile.objects.get(userName = userName).profileId
+            #     fuser2 = FUser.objects.filter(userName=user1,otherUser=user2)
+                
+            #     if fuser2.exists(): #완전 친구 관계
+            #         friendList = [FrendShipSerializer(fuser2.frId).data
+            #                       ,ProfileSeralizer(fuser2.otherUser).data] 
+            #         return Response(friendList,status=status.HTTP_200_OK)
+                
+            #     else: # 단순 요청 관계
+            #         friendList = [FrendShipSerializer(fuser.frId).data
+            #                       ,ProfileSeralizer(fuser.otherUser).data] 
+            #         return Response(friendList,status=status.HTTP_200_OK)
+                          
