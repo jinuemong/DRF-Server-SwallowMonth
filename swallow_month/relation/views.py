@@ -100,3 +100,26 @@ class MessageListView(APIView):
             return Response(friendList,status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
+    
+
+## is frined? username ,targetUser (profile Id) 받음 
+class CheckFriendView(APIView):
+
+    def post(self,request):
+
+        try:
+            userName = request.data['userName']
+            targetUser = request.data['targetUser'] #profileId
+
+            fuser = FUser.objects.filter(userName=userName,otherUser=targetUser)
+            if fuser.exists():
+                friendList = [FrendShipSerializer(fuser.frId).data
+                           ,ProfileSeralizer(fuser.otherUser).data] 
+                return Response(friendList,status=status.HTTP_200_OK)
+                          
+            else:
+                return Response([],status=status.HTTP_200_OK)
+
+
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)

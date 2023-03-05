@@ -1,5 +1,5 @@
 from .views import FUserViewSet,FriendShipViewSet,AlarmViewSet
-from . views import MessageViewSet, MessageListView
+from . views import MessageViewSet, MessageListView, CheckFriendView
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import RandomUserView,FriendListView
@@ -13,5 +13,6 @@ urlpatterns = [
     path('friends/',FriendListView.as_view()),
     path('messageList/',MessageListView.as_view()),
     path('randomProfile/',RandomUserView.as_view()),
+    path('checkFriendShip/',CheckFriendView.as_view()),
     path('',include(router_routine.urls)),
 ]
