@@ -29,6 +29,13 @@ ALLOWED_HOSTS = ['*']
 
 
 # Application definition
+THIRD_PARTIES = [
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
+    'rest_framework.authtoken',
+    'dj_rest_auth',
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -37,13 +44,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
     'monthReport',
     'task',
     'routine',
     'user',
     'relation',
-]
+] + THIRD_PARTIES
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -133,7 +139,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'user.User'
 
 REST_FRAMEWORK = {
-
+    'DEFAULT_AUTHENTICATION_CLASSES' : [
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
+    ]
 }
 # MEDIA FILE의 경로 설정 - Upload된 파일들이 저장되는 위치를 지정
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')

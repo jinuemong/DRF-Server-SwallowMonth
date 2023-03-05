@@ -15,6 +15,7 @@ class FriendShipViewSet(viewsets.ModelViewSet):
     serializer_class = FrendShipSerializer
     filter_backends = [filters.SearchFilter]
 
+
 class FUserViewSet(viewsets.ModelViewSet):
 
     queryset = FUser.objects.all()
@@ -85,17 +86,17 @@ class RandomUserView(APIView):
 
 
 
-# # 친구 리스트 (프로필 )
-# class FriendListView(APIView):
+# # 친구 리스트 (채팅방  )
+class MessageListView(APIView):
 
-#     def post(self,request):
-#         try:
-#             userName = request.data['userName']
-#             friendList = FUser.objects.filter(userName = userName)
-#             # 두 데이터 받기 
-#             friendList = [[FrendShipSerializer(put.frId).data
-#                            ,ProfileSeralizer(put.otherUser).data] 
-#                           for put in friendList]
-#             return Response(friendList,status=status.HTTP_200_OK)
-#         except:
-#             return Response(status=status.HTTP_404_NOT_FOUND)
+    def post(self,request):
+        try:
+            userName = request.data['userName']
+            friendList = FUser.objects.filter(userName = userName)
+            # 두 데이터 받기 
+            friendList = [[FrendShipSerializer(put.frId).data
+                           ,ProfileSeralizer(put.otherUser).data] 
+                          for put in friendList]
+            return Response(friendList,status=status.HTTP_200_OK)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
