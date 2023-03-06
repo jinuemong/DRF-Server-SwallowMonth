@@ -44,9 +44,9 @@ class FriendListView(APIView):
     def post(self,request):
         try:
             userName = request.data['userName']
-            friendList = FUser.objects.filter(userName = userName)
+            friendList = FUser.objects.filter(userId = userName)
             # 두 데이터 받기 
-            friendList = [ProfileSeralizer(put.otherUser).data 
+            friendList = [ProfileSeralizer(Profile(profileId=put.otherUser)).data 
                           for put in friendList]
             return Response(friendList,status=status.HTTP_200_OK)
         except:
@@ -65,11 +65,12 @@ class RandomUserView(APIView):
         pId = request.data['profileId']
         myProfile = Profile.objects.get(profileId = pId)
         # 내 친구 리스트 받기 
-        put_list = FUser.objects.filter(userName = myProfile.userName)
+        put_list = FUser.objects.filter(userId = myProfile.userName)
+        
         # 친구 리스트 profileId 추출   
         excludeList = set([put_list[i].otherUser for i in range(0,len(put_list))])
         # 제외 리스트에 나 추가 
-        excludeList.add(pId)
+        excludeList.add(int(pId))
 
         # 나와 친구가 아닌 리스트 얻기 
         profileList = [i for i in Profile_list if i not in excludeList]
@@ -78,15 +79,15 @@ class RandomUserView(APIView):
         rand_int = len(profileList) if len(profileList)<=10 else 10
         rand_list = random.sample(profileList,rand_int)
 
-        # 랜덤 리스트를 프로필로 추출 
-        randList = [ProfileSeralizer(put).data for put in rand_list]
+        # 랜덤 리스트를 프로필로 추출  
+        randList = [ProfileSeralizer(Profile.objects.get(profileId=put))
+                    .data for put in rand_list]
 
         return Response(randList,status=status.HTTP_200_OK)
 
 
 
-
-# # 친구 리스트 (채팅방  )
+# # 친구 리스트 (채팅방)
 class MessageListView(APIView):
 
     def post(self,request):
@@ -111,19 +112,24 @@ class CheckFriendView(APIView):
         try:
             userName = request.data['userName']
             targetUser = request.data['targetUser'] #profileId
+            
+            fuser = FUser.objects.filter(userId=userName) \
+            & FUser.objects.filter(otherUser=targetUser)
 
-            fuser = FUser.objects.filter(userName=userName,otherUser=targetUser)
             if fuser.exists():
-                friendList = [FrendShipSerializer(fuser.frId).data
-                           ,ProfileSeralizer(fuser.otherUser).data] 
+                fuser = FUserSerializer(fuser[0]).data
+                friendList = [FrendShipSerializer(FriendShip.objects.get(frId=fuser["frId"])).data
+                           ,ProfileSeralizer(Profile.objects.get(profileId=fuser["otherUser"])).data] 
+                print("!@#!@#!@#test 3 ",friendList)
                 return Response(friendList,status=status.HTTP_200_OK)
                           
             else:
-
+                print("!@#!@#!@#test 3 ","no dat ")
                 return Response([],status=status.HTTP_200_OK)
 
 
         except:
+            print("!@#!@#!@#test 3 ","no dat ")
             return Response(status=status.HTTP_400_BAD_REQUEST)
     
 
