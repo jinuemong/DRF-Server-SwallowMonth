@@ -46,7 +46,7 @@ class FriendListView(APIView):
             userName = request.data['userName']
             friendList = FUser.objects.filter(userId = userName)
             # 두 데이터 받기 
-            friendList = [ProfileSeralizer(Profile(profileId=put.otherUser)).data 
+            friendList = [ProfileSeralizer(Profile.objects.get(profileId=put.otherUser)).data 
                           for put in friendList]
             return Response(friendList,status=status.HTTP_200_OK)
         except:
@@ -118,13 +118,13 @@ class CheckFriendView(APIView):
 
             if fuser.exists():
                 fuser = FUserSerializer(fuser[0]).data
-                friendList = [FrendShipSerializer(FriendShip.objects.get(frId=fuser["frId"])).data
-                           ,ProfileSeralizer(Profile.objects.get(profileId=fuser["otherUser"])).data] 
-                print("!@#!@#!@#test 3 ",friendList)
-                return Response(friendList,status=status.HTTP_200_OK)
+                friendData = FrendShipSerializer(FriendShip.objects.get(frId=fuser["frId"])).data
+                profile=ProfileSeralizer(Profile.objects.get(profileId=fuser["otherUser"])).data 
+                
+                return Response({"friendData":friendData,"profile":profile},status=status.HTTP_200_OK)
                           
             else:
-                print("!@#!@#!@#test 3 ","no dat ")
+                print("!@#!@#!@#test 2 ","no dat ")
                 return Response([],status=status.HTTP_200_OK)
 
 
