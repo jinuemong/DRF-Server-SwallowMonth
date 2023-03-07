@@ -21,11 +21,13 @@ class Alarm(models.Model):
     type = models.CharField(max_length=20,null=False)
     typeId = models.IntegerField(null=False)
     isRead = models.BooleanField(default=False)
+    createTime = models.DateTimeField(auto_now_add=True) # 등록 시간 
 
 class Message(models.Model):
     messageId = models.BigAutoField(primary_key=True,help_text="Message ID")
     frId = models.ForeignKey(FriendShip,on_delete=models.CASCADE
                              ,related_name="messagePost",to_field="frId")
-    userID = models.ForeignKey(User,on_delete=models.CASCADE
+    userId = models.ForeignKey(User,on_delete=models.CASCADE
                                ,related_name="messagePost",to_field="userName")
     text = models.TextField()
+    createTime = models.DateTimeField(auto_now_add=True) # 등록 시간 

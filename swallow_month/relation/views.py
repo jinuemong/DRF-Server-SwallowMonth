@@ -24,14 +24,14 @@ class FUserViewSet(viewsets.ModelViewSet):
 
 class MessageViewSet(viewsets.ModelViewSet):
 
-    queryset = Message.objects.all()
+    queryset = Message.objects.all().order_by('createTime')
     serializer_class = MessageSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['=frId__frId']
 
 class AlarmViewSet(viewsets.ModelViewSet):
     
-    queryset = Alarm.objects.all()
+    queryset = Alarm.objects.all().order_by('createTime')
     serializer_class = AlarmSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['=userId__userName__userName']
