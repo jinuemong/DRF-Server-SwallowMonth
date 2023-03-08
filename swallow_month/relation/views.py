@@ -45,7 +45,7 @@ class FriendListView(APIView):
         try:
             userName = request.data['userName']
             friendList = FUser.objects.filter(userId = userName)
-            # 두 데이터 받기 
+            #  데이터 받기 
             friendList = [ProfileSeralizer(Profile.objects.get(profileId=put.otherUser)).data 
                           for put in friendList]
             return Response(friendList,status=status.HTTP_200_OK)
