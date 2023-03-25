@@ -32,7 +32,7 @@ class MessageViewSet(viewsets.ModelViewSet):
 class AlarmView(APIView):
     serializer_class = AlarmSerializer
 
-    # userId type typeId
+    # userId type typeId -> 알림 중복 생성 방지 
     def post(self,request):
         data = request.data
         # 기존 데이터 유무 확인
@@ -47,7 +47,7 @@ class AlarmView(APIView):
             return Response(serializer.data,status=status.HTTP_200_OK)
         
     def get(self,request):
-        data = request.data['userName']
+        data = self.request.query_params.get('userName')
         dataList = Alarm.objects.filter(userId=data)
         alarmList = []
         for alarm in dataList: # 상대 주체, 알림 내용을 전송
