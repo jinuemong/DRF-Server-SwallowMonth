@@ -29,12 +29,41 @@ class MessageViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter]
     search_fields = ['=frId__frId']
 
-class AlarmViewSet(viewsets.ModelViewSet):
-    
-    queryset = Alarm.objects.all().order_by('createTime')
+class AlarmView(APIView):
     serializer_class = AlarmSerializer
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['=userId__userName__userName']
+
+    # userId type typeId
+    def post(self,request):
+        data = request.data
+        # 기존 데이터 유무 확인
+        isData = Alarm.objects.filter(userId=data['userName'])\
+        & Alarm.objects.filter(type=data['type'])\
+        & Alarm.objects.filter(fromUserId=data['fromUserId']) # 보낸 유저 이름 
+        if isData.exists():
+            return Response(isData,status=status.HTTP_200_OK)
+        else:
+            serializer = self.serializer_class(data=data)
+            serializer.is_valid(raise_exception=True)
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        
+    def get(self,request):
+        data = request.data['userName']
+        dataList = Alarm.objects.filter(userId=data)
+        alarmList = []
+        for alarm in dataList: # 상대 주체, 알림 내용을 전송
+            alarmList.append([Profile.objects.get(userName = alarm.fromUserId),alarm])
+        return Response(alarmList,status=status.HTTP_200_OK)
+    
+    def delete(self,request):
+        data = request.data['alarmId']
+        alarm = Alarm.objects.get(alarmId = data)
+        try:
+            alarm.delete()
+            return Response(alarm,status=status.HTTP_200_OK)
+        except alarm.DoesNotExist:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    
 
     
 

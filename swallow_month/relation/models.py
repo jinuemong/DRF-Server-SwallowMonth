@@ -1,4 +1,4 @@
-from user.models import User
+from user.models import User,Profile
 from django.db import models
 # two member
 class FriendShip(models.Model):
@@ -17,9 +17,11 @@ class FUser(models.Model):
 class Alarm(models.Model):
     alarmId = models.BigAutoField(primary_key=True,help_text="Alarm ID")
     userId = models.ForeignKey(User,on_delete=models.CASCADE
-                               ,related_name="AlarmPost",to_field="userName")
+                               ,related_name="AlarmUserPost",to_field="userName")
     type = models.CharField(max_length=20,null=False)
     typeId = models.IntegerField(null=False)
+    fromUserId = models.ForeignKey(User,on_delete=models.CASCADE
+                                   ,related_name="AlarmFromUserPost",to_field="userName")
     isRead = models.BooleanField(default=False)
     createTime = models.DateTimeField(auto_now_add=True) # 등록 시간 
 
@@ -29,5 +31,6 @@ class Message(models.Model):
                              ,related_name="messagePost",to_field="frId")
     userId = models.ForeignKey(User,on_delete=models.CASCADE
                                ,related_name="messagePost",to_field="userName")
+    isRead = models.BooleanField(default=False)
     text = models.TextField()
     createTime = models.DateTimeField(auto_now_add=True) # 등록 시간 
