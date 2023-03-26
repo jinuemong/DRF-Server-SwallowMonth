@@ -175,16 +175,16 @@ class CheckFriendView(APIView):
 
             if fuser.exists() & fuserFrom.exists(): ## type 1 친구
                 type = 1
-                print("sdljfdsldjl 3 1",type,FUserSerializer(fuser).data.frId)
-                return Response({"type":type,"frId":fuser[0].frId},status=status.HTTP_200_OK)
+                frId = FUserSerializer(fuser[0]).data["frId"]
+                return Response({"type":type,"frId":frId},status=status.HTTP_200_OK)
             elif fuser.exists() & (not fuserFrom.exists()): ## type 2 요청 보냄
                 type = 2 
-                print("sdljfdsldjl 3 2",type,FUserSerializer(fuser).data.frId)
-                return Response({"type":type,"frId":fuser[0].frId},status=status.HTTP_200_OK)
+                frId = FUserSerializer(fuser[0]).data["frId"]
+                return Response({"type":type,"frId":frId},status=status.HTTP_200_OK)
             elif (not fuser.exists()) & fuserFrom.exists(): ## type 3 요청 받음  
                 type = 3
-                print("sdljfdsldjl 3 3",type,FUserSerializer(fuserFrom[0])["frId"])
-                return Response({"type":type,"frId":fuserFrom[0].frId},status=status.HTTP_200_OK)
+                frId = FUserSerializer(fuserFrom[0]).data["frId"]
+                return Response({"type":type,"frId":frId},status=status.HTTP_200_OK)
             else:                                         ## 없는 관계
                 type = 4 
                 print("sdljfdsldjl 3 4",type,"no")
