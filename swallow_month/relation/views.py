@@ -36,22 +36,27 @@ class AlarmView(APIView):
     def post(self,request):
         data = request.data
         # 기존 데이터 유무 확인
-        isData = Alarm.objects.filter(userId=data['userName'])\
+        isData = Alarm.objects.filter(userId=data['userId'])\
         & Alarm.objects.filter(type=data['type'])\
-        & Alarm.objects.filter(fromUserId=data['fromUserId']) # 보낸 유저 이름 
+        & Alarm.objects.filter(fromUserId=data['fromUserI']) # 보낸 유저 이름 
         if isData.exists():
             return Response(isData,status=status.HTTP_200_OK)
         else:
             serializer = self.serializer_class(data=data)
             serializer.is_valid(raise_exception=True)
+            serializer.save()
             return Response(serializer.data,status=status.HTTP_200_OK)
         
     def get(self,request):
-        data = self.request.query_params.get('userName')
+        data = request.query_params.get('userName')
         dataList = Alarm.objects.filter(userId=data)
         alarmList = []
+
         for alarm in dataList: # 상대 주체, 알림 내용을 전송
-            alarmList.append([Profile.objects.get(userName = alarm.fromUserId),alarm])
+            alarmList.append({"profile":ProfileSeralizer(
+                Profile.objects
+                .get(userName = alarm.fromUserId))
+                .data,"alarm":AlarmSerializer(alarm).data})
         return Response(alarmList,status=status.HTTP_200_OK)
     
     def delete(self,request):
@@ -74,10 +79,21 @@ class FriendListView(APIView):
         try:
             userName = request.data['userName']
             friendList = FUser.objects.filter(userId = userName)
-            #  데이터 받기 
-            friendList = [ProfileSeralizer(Profile.objects.get(profileId=put.otherUser)).data 
-                          for put in friendList]
-            return Response(friendList,status=status.HTTP_200_OK)
+            totalList  = []
+        
+            for friend in friendList: #친구 데이터 추가 
+        
+                isData =  FUser.objects.filter( # 역설 관계 확인 
+                    userId = Profile.objects.get(profileId=friend.otherUser).userName
+                    ) & FUser.objects.filter(
+                    otherUser=Profile.objects.get(profileId=friend.otherUser).profileId
+                    )
+                if isData.exists():
+                    totalList.append(ProfileSeralizer(Profile.objects.get(
+                        profileId=friend.otherUser
+                    )).data)
+
+            return Response(totalList,status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -133,32 +149,48 @@ class MessageListView(APIView):
     
 
 ## is frined? username ,targetUser (profile Id) 받음 
-# 두 관계를 확인
+# 두 관계를 확인 (1. 친구관계, 2. 요청을 보낸 관계, 3. 요청을 받은 관계, 4. 아무런 관계 없음 )
 class CheckFriendView(APIView):
 
     def post(self,request):
-
         try:
+            type = 4 
             userName = request.data['userName']
-            targetUser = request.data['targetUser'] #profileId
-            
+            targetUserId = request.data['targetUser'] #profileId
+
+            print("sdljfdsldjl 1",userName,targetUserId)
+
             fuser = FUser.objects.filter(userId=userName) \
-            & FUser.objects.filter(otherUser=targetUser)
+            & FUser.objects.filter(otherUser=targetUserId)
 
-            if fuser.exists():
-                fuser = FUserSerializer(fuser[0]).data
-                friendData = FrendShipSerializer(FriendShip.objects.get(frId=fuser["frId"])).data
-                profile=ProfileSeralizer(Profile.objects.get(profileId=fuser["otherUser"])).data 
-                
-                return Response({"friendData":friendData,"profile":profile},status=status.HTTP_200_OK)
-                          
-            else:
-                print("!@#!@#!@#test 2 ","no dat ")
-                return Response([],status=status.HTTP_200_OK)
+            print("sdljfdsldjl 2",fuser,fuser.exists())
 
+            fuserFrom =  FUser.objects.filter( # 역설 관계 확인 
+                userId = Profile.objects.get(profileId=targetUserId).userName
+                ) & FUser.objects.filter(
+                otherUser=Profile.objects.get(userName=userName).profileId
+                )
+            
+            print("sdljfdsldjl 3",fuserFrom,fuserFrom.exists())
+
+            if fuser.exists() & fuserFrom.exists(): ## type 1 친구
+                type = 1
+                print("sdljfdsldjl 3 1",type,FUserSerializer(fuser).data.frId)
+                return Response({"type":type,"frId":fuser[0].frId},status=status.HTTP_200_OK)
+            elif fuser.exists() & (not fuserFrom.exists()): ## type 2 요청 보냄
+                type = 2 
+                print("sdljfdsldjl 3 2",type,FUserSerializer(fuser).data.frId)
+                return Response({"type":type,"frId":fuser[0].frId},status=status.HTTP_200_OK)
+            elif (not fuser.exists()) & fuserFrom.exists(): ## type 3 요청 받음  
+                type = 3
+                print("sdljfdsldjl 3 3",type,FUserSerializer(fuserFrom[0])["frId"])
+                return Response({"type":type,"frId":fuserFrom[0].frId},status=status.HTTP_200_OK)
+            else:                                         ## 없는 관계
+                type = 4 
+                print("sdljfdsldjl 3 4",type,"no")
+                return Response({"type":type},status=status.HTTP_200_OK)
 
         except:
-            print("!@#!@#!@#test 3 ","no dat ")
             return Response(status=status.HTTP_400_BAD_REQUEST)
     
 
