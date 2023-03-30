@@ -8,6 +8,11 @@ from .renderers import UserJsonRenderer #렌더 작업 전송
 from rest_framework import status ,filters 
 from rest_framework.generics import RetrieveUpdateAPIView , RetrieveDestroyAPIView
 from rest_framework import viewsets
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.contrib.auth import authenticate,get_user_model
+
+Usre = get_user_model()
+
 # 회원가입 view 
 class RegistrationAPIView(APIView):
     
@@ -22,9 +27,20 @@ class RegistrationAPIView(APIView):
         user = request.data
         serializer = self.serializer_class(data=user) #직렬화
         serializer.is_valid(raise_exception=True) #유효성 확인 +예외처리
-        serializer.save() # 저장
+        user = serializer.save() # 저장
+        ## 토큰 인증에는 object -모델을 전송해주어야 함 
+        token = TokenObtainPairSerializer.get_token(user)
+        refresh_token = str(token)
+        access_token = str(token.access_token)
+
         # 성공 응답 반환
-        return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(
+            {"user":serializer.data,
+             "token":{
+               "access":access_token,
+               "refresh":refresh_token
+             }
+             },status=status.HTTP_201_CREATED)
 
 # 로그인 view
 class LoginAPIView(APIView):
@@ -33,15 +49,28 @@ class LoginAPIView(APIView):
     serializer_class = LoginSerializer
     
     def post(self, request):
-        user = request.data
-        
         # 요청 온 user를 serializer에 보내줌
-        serializer = self.serializer_class(data=user)
-        serializer.is_valid(raise_exception=True) #유효성 검사
-        
-        #유저 존재 시 성공 응답
-        return Response(serializer.data,status=status.HTTP_200_OK)
+        user = User.objects.get(userName=request.data["userName"])
+
+        serializer = self.serializer_class(data=request.data) #직렬화
+        serializer.is_valid(raise_exception=True) #유효성 확인 +예외처리
+
     
+        if user is not None:
+            token = TokenObtainPairSerializer.get_token(user)
+            refresh_token = str(token)
+            access_token = str(token.access_token)
+            
+            #유저 존재 시 성공 응답
+            return Response(
+                {"user":serializer.data,
+                 "token":{
+                "access":access_token,
+                "refresh":refresh_token
+                }
+                },status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 # 사용자 조회 + 업데이트
 class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView,RetrieveDestroyAPIView):
@@ -112,3 +141,13 @@ class UpdateProfileView(APIView):
             serializer.save() #데이터가 유효하면 저장 후 반환 
             return Response(serializer.data,status=status.HTTP_200_OK)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    
+
+class SearchUserView(APIView):
+    def post(self,request):
+        data = request.data
+        data_list = Profile.objects.filter(
+            userName__userName__icontains = data['search']
+        )
+        data_list = [ProfileSeralizer(put).data for put in data_list]
+        return Response(data_list,status=status.HTTP_200_OK)

@@ -156,11 +156,16 @@ class MessageListView(APIView):
         try:
             userName = request.data['userName']
             friendList = FUser.objects.filter(userName = userName)
-            # 두 데이터 받기 
-            friendList = [[FrendShipSerializer(put.frId).data
-                           ,ProfileSeralizer(put.otherUser).data] 
-                          for put in friendList]
-            return Response(friendList,status=status.HTTP_200_OK)
+            totalList = []
+            # 두 데이터씩 받기 
+            for friend in friendList:
+                targetUser = FUserSerializer(friend).data["otherUser"]
+                relation = getFriendship(userName,targetUser)
+                if relation["type"]==1:
+                    totalList.append([{"friendData":FrendShipSerializer(friend.frId).data,
+                                       "profile":ProfileSeralizer(friend.otherUser).data }])
+        
+            return Response(totalList,status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
     

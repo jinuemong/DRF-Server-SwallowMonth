@@ -26,24 +26,24 @@ class User(AbstractBaseUser,PermissionsMixin):
     #     return self.userName
     
     
-    # 사용자 인증을 위한 토큰 생성
-    @property
-    def token(self):
-        return self._generate_jwt_token()
+    # # 사용자 인증을 위한 토큰 생성
+    # @property
+    # def token(self):
+    #     return self._generate_jwt_token()
     
-    # 토큰 발행 함수(자체)
-    def _generate_jwt_token(self):
-        #다른 토큰 생성을 위한 시간 값  
-        dt = datetime.now() + timedelta(days=60)
+    # # 토큰 발행 함수(자체)
+    # def _generate_jwt_token(self):
+    #     #다른 토큰 생성을 위한 시간 값  
+    #     dt = datetime.now() + timedelta(days=60)
         
-        token = jwt.encode({
-            'id' : self.pk,
-            'exp': dt.utcfromtimestamp(dt.timestamp())
+    #     token = jwt.encode({
+    #         'id' : self.pk,
+    #         'exp': dt.utcfromtimestamp(dt.timestamp())
             
-            #hash를 통한 암호화
-        }, settings.SECRET_KEY, algorithm = "HS256")
+    #         #hash를 통한 암호화
+    #     }, settings.SECRET_KEY, algorithm = "HS256")
         
-        return token 
+    #     return token 
     
 
 class Profile(models.Model):

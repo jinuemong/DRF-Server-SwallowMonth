@@ -1,8 +1,7 @@
 from .models import User,Profile
 from rest_framework import serializers
 from django.utils import timezone
-from django.contrib.auth import authenticate
-
+from django.contrib.auth import authenticate,get_user_model
 
 #serializer를 통해 사용자 등록을 위한 
 # 요청(request)과 응답(response)을 직렬화(serialize)
@@ -15,24 +14,21 @@ class RegstrationSerializer(serializers.ModelSerializer):
         min_length = 4,
         write_only = True
     )
-    
-    token = serializers.CharField(max_length=255,read_only=True)
-    
+
     class Meta:
         model = User
         fields =[
             'userName',
             'password',
-            'token'
-            ] #토큰 데이터 추가
+            ] 
         
     def create(self, validated_data):
         userName = validated_data['userName']
         if userName =='superuser':
             print("슈퍼 유저가 생성 되었습니다.",userName)
+        
             return User.objects.create_superuser(**validated_data)
         else:
-            print("슈퍼 유저가 생성 실패",userName)
             return User.objects.create_user(**validated_data)
         
     
@@ -41,11 +37,10 @@ class RegstrationSerializer(serializers.ModelSerializer):
 # username과 password를 확인 후 응답 전송
 
 class LoginSerializer(serializers.Serializer):
-    
     userName = serializers.CharField(max_length=255)
     password = serializers.CharField(max_length=128, write_only = True)
     last_login = serializers.CharField(max_length=255,read_only = True)
-    token = serializers.CharField(max_length=255,read_only=True)
+
     
     # 유효성 검사
     def validate(self, data):
@@ -77,14 +72,12 @@ class LoginSerializer(serializers.Serializer):
                 'This user has been deactivated'
             )
             
-        
-        user.last_login = timezone.now()
+        last_login = timezone.now()
+        user.last_login = last_login
         user.save(update_fields=['last_login'])
-        token = user.token
-        
+        print("user auth",user.userName)
         return {
             'userName':user.userName,
-            'token':token,
             'last_login':user.last_login
         }
     
