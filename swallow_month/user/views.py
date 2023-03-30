@@ -9,9 +9,7 @@ from rest_framework import status ,filters
 from rest_framework.generics import RetrieveUpdateAPIView , RetrieveDestroyAPIView
 from rest_framework import viewsets
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from django.contrib.auth import authenticate,get_user_model
 
-Usre = get_user_model()
 
 # 회원가입 view 
 class RegistrationAPIView(APIView):
