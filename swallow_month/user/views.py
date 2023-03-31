@@ -123,7 +123,9 @@ class ProfileViewSet(viewsets.ModelViewSet):
 # profile & user 업데이트용
 
 class UpdateProfileView(APIView):
-
+    # 인증 된 사용자만 접근 가능 
+    permission_classes = (IsAuthenticated,)
+    
     def get_object(self,profileId):
         try:
             return Profile.objects.get(profileId = profileId)
