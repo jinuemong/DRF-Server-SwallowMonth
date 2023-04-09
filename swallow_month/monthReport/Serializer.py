@@ -1,4 +1,4 @@
-from .models import MonthData
+from .models import MonthData, RecordData
 from rest_framework import serializers
 from task.Serializer import TaskSerializer
 from routine.Serializer import  DayRoutineSerializer
@@ -18,3 +18,12 @@ class MonthDataSerializer(serializers.ModelSerializer):
                   'totalPer','totalPoint',
                   'taskCount','dayRoutineCount',
                   'doneTask','clearRoutine']
+
+
+class RecordDataSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        managed = True
+        model = RecordData
+        db_table = "RecordDatas"
+        fields  = "__all__"
