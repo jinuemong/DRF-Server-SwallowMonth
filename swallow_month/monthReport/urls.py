@@ -4,7 +4,7 @@ from rest_framework.routers import DefaultRouter
 
 router_monthData = DefaultRouter()
 router_monthData.register("monthDatas",MonthViewSet)
-router_monthData.register("recodrdDatas",RecordViewSet)
+router_monthData.register("recordDatas",RecordViewSet)
 urlpatterns = [
     path('',include(router_monthData.urls))
 ]

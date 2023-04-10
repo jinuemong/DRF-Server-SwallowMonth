@@ -6,9 +6,9 @@ import time
 
 sched = BackgroundScheduler()
 
-@sched.scheduled_job('interval',seconds=30,id = "update")
+# @sched.scheduled_job('interval',seconds=30,id = "update")
 # 매달 1일 실행 
-# @sched.scheduled_job('interval',day=1,id = "update")
+@sched.scheduled_job('interval',days=1,id = "update")
 def save_list():
     now = datetime.now() - timedelta(days=1) # 전 날 발급 
     print(now) 
