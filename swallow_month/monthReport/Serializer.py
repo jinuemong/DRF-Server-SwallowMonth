@@ -26,4 +26,4 @@ class RecordDataSerializer(serializers.ModelSerializer):
         managed = True
         model = RecordData
         db_table = "RecordDatas"
-        fields  = "__all__"
+        fields = "__all__"

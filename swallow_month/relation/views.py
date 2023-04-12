@@ -99,18 +99,21 @@ class FriendListView(APIView):
     def post(self,request):
         try:
             userName = request.data['userName']
+            number = request.data['num']
             friendList = FUser.objects.filter(userId = userName)
             totalList  = []
         
             for friend in friendList: #친구 데이터 추가 
                 targetUser = FUserSerializer(friend).data["otherUser"]
                 relation = getFriendship(userName,targetUser)
-
+        
                 if relation["type"]==1:
                     totalList.append(ProfileSeralizer(Profile.objects.get(
                         profileId=friend.otherUser)).data)
-
-            return Response(totalList,status=status.HTTP_200_OK)
+            count = len(totalList)
+            if number!="-1":
+                return Response({"count":count,"friends":totalList[:int(number)]},status=status.HTTP_200_OK)
+            return Response({"count":count,"friends":totalList},status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
 

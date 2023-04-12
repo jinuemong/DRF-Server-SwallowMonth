@@ -23,7 +23,7 @@ class RecordData(models.Model):
     keyDate = models.CharField(max_length=20,null=False)
     totalPer = models.IntegerField()
     totalPoint = models.IntegerField()
-    acitivityNum = models.IntegerField()
+    activityNum = models.IntegerField()
     clearNum = models.IntegerField()
 # class RankingDate(models.Model): 
 # rankingId , keyDate, totalUser(참가유저)

@@ -38,19 +38,9 @@ class RecordViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter]
     search_fields = ['=userId__userName']
 
-    # def get_queryset(self):
-    #     userName= self.request.query_params.get('userName')
-    #     keyDate = self.request.query_params.get('keyDate')
-    #     # user + key data 검색 (1개 쿼리 반환)
-    #     if userName and keyDate:
-    #         queryset =self.queryset.filter(userId__userName  = userName) \
-    #         & self.queryset.filter(keyDate = keyDate)     
-    #         return queryset
-    #     # user만 검색 (dayData리스트 반환)
-    #     elif keyDate:
-    #         queryset =self.queryset.filter(keyDate  = keyDate)
-    #         return queryset
-    #     # else
-    #     return self.queryset    
+class RankingViewSet(viewsets.ModelViewSet):
     
-
+    queryset = RecordData.objects.all()
+    serializer_class = RecordDataSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['=keyDate']

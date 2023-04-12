@@ -8,7 +8,7 @@ sched = BackgroundScheduler()
 
 # @sched.scheduled_job('interval',seconds=30,id = "update")
 # 매달 1일 실행 
-@sched.scheduled_job('interval',days=1,id = "update")
+# @sched.scheduled_job('interval',days=1,id = "update")
 def save_list():
     now = datetime.now() - timedelta(days=1) # 전 날 발급 
     print(now) 
@@ -32,7 +32,7 @@ def save_list():
                 keyDate = lastKeyDate,
                 totalPer = data["totalPer"],
                 totalPoint = data["totalPoint"],
-                acitivityNum = data["taskCount"]+data["dayRoutineCount"],
+                activityNum = data["taskCount"]+data["dayRoutineCount"],
                 clearNum = data["doneTask"] + data["clearRoutine"]
             )
 
