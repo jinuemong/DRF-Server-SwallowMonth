@@ -30,13 +30,25 @@ class MonthViewSet(viewsets.ModelViewSet):
     
 
 # 매 월 1일에 레코드 데이터 생성 : 해당 데이터의 순위 + 프로필 + MonthDate 생성
-
 class RecordViewSet(viewsets.ModelViewSet):
 
     queryset = RecordData.objects.all()
     serializer_class = RecordDataSerializer
     filter_backends = [filters.SearchFilter]
-    search_fields = ['=userId__userName']
+    # search_fields = ['=userId__userName']
+
+    def get_queryset(self):
+        userName= self.request.query_params.get('userName')
+        keyDate = self.request.query_params.get('keyDate')
+
+        if userName and keyDate: # 가장 최근
+            queryset = self.queryset.filter(userId__userName=userName).first()
+            return queryset
+        elif userName: # 유저의 레코드 
+            queryset = self.queryset.filter(userId__userName=userName)
+            return queryset
+        
+        return self.queryset
 
 class RankingViewSet(viewsets.ModelViewSet):
     

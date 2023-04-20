@@ -27,3 +27,4 @@ class RecordDataSerializer(serializers.ModelSerializer):
         model = RecordData
         db_table = "RecordDatas"
         fields = "__all__"
+
