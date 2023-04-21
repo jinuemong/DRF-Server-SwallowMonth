@@ -16,6 +16,7 @@ import datetime
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+STATIC_ROOT = os.path.join(BASE_DIR, "static") # 정적 파일 경로 지정 & 모으기 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -24,10 +25,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-7v#0vxr@zwkkk-a0lyomz)t=oqm)%pa%#-7v$x6(7o#@8&gsj5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 
 # Application definition
 THIRD_PARTIES = [
@@ -50,9 +53,12 @@ INSTALLED_APPS = [
     'routine',
     'user',
     'relation',
+    'corsheaders',
 ] + THIRD_PARTIES
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # 배포 
+    'whitenoise.middleware.WhiteNoiseMiddleware', # 배포 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -81,6 +87,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'swallow_month.wsgi.application'
+
 
 
 # Database
