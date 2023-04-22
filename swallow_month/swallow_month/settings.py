@@ -12,9 +12,16 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 from pathlib import Path
 import datetime
-
+import environ
+from django.core.exceptions import ImproperlyConfigured
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# 환경변수 세팅 
+env = environ.Env(DEBUG=(bool, True))
+environ.Env.read_env(
+    env_file=os.path.join(BASE_DIR, '.env')
+)
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static") # 정적 파일 경로 지정 & 모으기 
 
@@ -22,10 +29,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static") # 정적 파일 경로 지정 & �
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-7v#0vxr@zwkkk-a0lyomz)t=oqm)%pa%#-7v$x6(7o#@8&gsj5'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# SECRET_KEY = 'django-insecure-7v#0vxr@zwkkk-a0lyomz)t=oqm)%pa%#-7v$x6(7o#@8&gsj5'
+SECRET_KEY = env('SECRET_KEY')
+ 
+DEBUG = env('DEBUG') 
 
 ALLOWED_HOSTS = ['*']
 
@@ -99,7 +106,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

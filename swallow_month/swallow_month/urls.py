@@ -34,5 +34,7 @@ urlpatterns = [
     path('routine/',include('routine.urls')),
     path('relation/',include('relation.urls')),
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root':settings.MEDIA_ROOT}),
+    re_path(r'^static/(?:.*)$', serve, {'document_root': settings.STATIC_ROOT, }),
+
 ] 
 # + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 필요 ㅌ
