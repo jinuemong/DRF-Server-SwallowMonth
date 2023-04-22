@@ -18,7 +18,7 @@ from django.core.exceptions import ImproperlyConfigured
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # 환경변수 세팅 
-env = environ.Env(DEBUG=(bool, True))
+env = environ.Env(DEBUG=(bool, False))
 environ.Env.read_env(
     env_file=os.path.join(BASE_DIR, '.env')
 )
@@ -32,7 +32,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static") # 정적 파일 경로 지정 & �
 # SECRET_KEY = 'django-insecure-7v#0vxr@zwkkk-a0lyomz)t=oqm)%pa%#-7v$x6(7o#@8&gsj5'
 SECRET_KEY = env('SECRET_KEY')
  
-DEBUG = env('DEBUG') 
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -142,7 +142,7 @@ SCHEDULER_DEFAULT = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
