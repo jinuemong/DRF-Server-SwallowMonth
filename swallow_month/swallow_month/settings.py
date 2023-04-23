@@ -15,6 +15,9 @@ import datetime
 import environ
 from django.core.exceptions import ImproperlyConfigured
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # 환경변수 세팅 
@@ -22,17 +25,23 @@ env = environ.Env(DEBUG=(bool, False))
 environ.Env.read_env(
     env_file=os.path.join(BASE_DIR, '.env')
 )
-
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static") # 정적 파일 경로 지정 & 모으기 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
+
+
+SECRET_KEY = env('SECRET_KEY')
+DEBUG = env("DEBUG")
+
+
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'django-insecure-7v#0vxr@zwkkk-a0lyomz)t=oqm)%pa%#-7v$x6(7o#@8&gsj5'
-SECRET_KEY = env('SECRET_KEY')
+# SECRET_KEY = env('SECRET_KEY')
  
-DEBUG = False
+
 
 ALLOWED_HOSTS = ['*']
 
@@ -84,7 +93,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                'django.template.context_processors.debug',
+                # 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -142,7 +151,7 @@ SCHEDULER_DEFAULT = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = '/static/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -195,9 +204,10 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': datetime.timedelta(days=1),
 }
 
-# MEDIA FILE의 경로 설정 - Upload된 파일들이 저장되는 위치를 지정
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 # 절대 경로로 이미지로 접근
 # http://http://127.0.0.1:8000/media/현재날자/이미지.jpg
 MEDIA_URL = '/media/'
+
+# MEDIA FILE의 경로 설정 - Upload된 파일들이 저장되는 위치를 지정
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')

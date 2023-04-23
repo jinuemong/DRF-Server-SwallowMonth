@@ -22,12 +22,13 @@ from user import urls
 from monthReport import urls
 from relation import urls
 from django.conf import settings
+
 from django.conf.urls.static import static
 from django.views.static import serve
 from django.urls import re_path
 
 urlpatterns = [
-    path('admin/', include(admin.site.urls)),
+    path('admin/', admin.site.urls),
     path('month/',include('monthReport.urls')),
     path('user/',include('user.urls')),
     path('task/',include('task.urls')),
