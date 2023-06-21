@@ -25,7 +25,7 @@
 
    - Python, Django, DRF
    
-[배포]
+#### [배포]
 - https://app.cloudtype.io/@jinuemong/swallowmonthdistribution:main/swallowmonth-distribution
-[도메인]
+#### [도메인]
 - https://port-0-swallowmonth-distribution-17xqnr2algrugrat.sel3.cloudtype.app/
