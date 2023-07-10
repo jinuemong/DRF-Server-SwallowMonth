@@ -1,6 +1,9 @@
 # DRF Project
 ------------------
 
+### Project Information
+https://www.notion.so/Jinwoo-Kim-ba88c2c3e87a4a16b5ed402bf501dea4?p=892d503183fe4ef8be634eb9e368851f&pm=c
+
 ### Project Name
    - Swallow a Month Server
    
